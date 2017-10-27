@@ -256,6 +256,8 @@ class IndexController extends Zend_Controller_Action
 
   /**
    * Metodo para retornar errores
+   * @param $data JSON con la data del error
+   * @param $codeValid Integer con el codigo de success
    * @return json
    */
   private function _getError($data, $codeValid = 200)
