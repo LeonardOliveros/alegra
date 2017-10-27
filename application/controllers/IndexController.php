@@ -146,6 +146,42 @@ class IndexController extends Zend_Controller_Action
     ]);
   }
 
+  /**
+   * Crear un contacto
+   * @return json
+   */
+  public function createAction()
+  {
+    $this->getHelper('ViewRenderer')->setNoRender();
+    $this->getResponse()->setHeader('Content-Type', 'application/json');
+    $parameters = json_decode($this->_request->getPost('data'));
+
+    if (!isset($parameters->name) || empty($parameters->name)) {
+      return $this->_helper->json->sendJson([
+        'success' => false,
+        'data' => 'Es obligatorio el campo nombre',
+      ]);
+    }
+
+    if ( isset($parameters->term) && !empty($parameters->term)) {
+      $parameters->term = $this->_terms[$parameters->term];
+    }
+
+    if ( isset($parameters->priceList) && !empty($parameters->priceList)) {
+      $parameters->priceList = $this->_priceList[$parameters->priceList];
+    }
+
+    $response = $this->_client->setRawData( json_encode($parameters) )->request('POST');
+    $data = json_decode($response->getBody());
+
+    $this->_getError($data, 201);
+
+    return $this->_helper->json->sendJson([
+      'success' => true,
+      'data' => $data
+    ]);
+  }
+
   private function _getError($data, $codeValid = 200)
   {
     if (isset($data->code) && $data->code !== $codeValid) {
