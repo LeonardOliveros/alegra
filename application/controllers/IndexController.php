@@ -182,6 +182,49 @@ class IndexController extends Zend_Controller_Action
     ]);
   }
 
+  /**
+   * Actualizar un contacto
+   * @return json
+   */
+  public function updateAction()
+  {
+    $this->getHelper('ViewRenderer')->setNoRender();
+    $this->getResponse()->setHeader('Content-Type', 'application/json');
+
+    $parameters = json_decode($this->_request->getPost('data'));
+
+    if (!isset($parameters->id) || empty($parameters->id)) {
+      return $this->_helper->json->sendJson([
+        'success' => false,
+        'data' => 'El parametro id no tiene data',
+      ]);
+    }
+
+    if (!isset($parameters->name) || empty($parameters->name)) {
+      return $this->_helper->json->sendJson([
+        'success' => false,
+        'data' => 'Es obligatorio el campo nombre',
+      ]);
+    }
+
+    if ( isset($parameters->term) && !empty($parameters->term)) {
+      $parameters->term = $this->_terms[$parameters->term];
+    }
+
+    if ( isset($parameters->priceList) && !empty($parameters->priceList)) {
+      $parameters->priceList = $this->_priceList[$parameters->priceList];
+    }
+
+    $this->_client->setUri($this->_uri . '/' . $parameters->id);
+    $response = $this->_client->setRawData(json_encode($parameters))->request('PUT');
+    $data = json_decode($response->getBody());
+
+    return $this->_helper->json->sendJson([
+      'success' => true,
+      'data' => $data,
+    ]);
+  }
+
   private function _getError($data, $codeValid = 200)
   {
     if (isset($data->code) && $data->code !== $codeValid) {
