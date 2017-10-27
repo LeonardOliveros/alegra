@@ -74,6 +74,28 @@ class IndexController extends Zend_Controller_Action
     ]);
   }
 
+  /**
+   * Listar los clientes
+   *
+   * @return json
+   */
+  public function clientAction()
+  {
+    $this->getHelper('ViewRenderer')->setNoRender();
+    $this->getResponse()->setHeader('Content-Type', 'application/json');
+
+    $this->_client->setUri($this->_uri . "?type=client");
+    $response = $this->_client->request();
+    $data = $response->getBody();
+
+    $this->_getError($data);
+
+    return $this->_helper->json->sendJson([
+      'success' => true,
+      'data' => $data,
+    ]);
+  }
+
   private function _getError($data, $codeValid = 200)
   {
     if (isset($data->code) && $data->code !== $codeValid) {
