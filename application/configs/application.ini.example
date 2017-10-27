@@ -8,9 +8,9 @@ appnamespace = "Application"
 resources.frontController.controllerDirectory = APPLICATION_PATH "/controllers"
 resources.frontController.params.displayExceptions = 0
 
-alegra.uri = "https://app.alegra.com/api/v1/"
-alegra.mail = "correoregistrado@enalegra"
-alegra.token = "tokengeneradodesdelaconfiguraciondealegra"
+configAlegra.uri = "https://app.alegra.com/api/v1/"
+configAlegra.mail = "correoregistrado@enalegra"
+configAlegra.token = "tokengeneradodesdelaconfiguraciondealegra"
 
 [staging : production]
 
