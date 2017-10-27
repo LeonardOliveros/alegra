@@ -118,6 +118,34 @@ class IndexController extends Zend_Controller_Action
     ]);
   }
 
+  /**
+   * Recuperar la data de un solo registro
+   * @return string
+   */
+  public function findAction()
+  {
+    $this->getHelper('ViewRenderer')->setNoRender();
+    $this->getResponse()->setHeader('Content-Type', 'application/json');
+
+    if (empty($this->_request->getQuery('id'))) {
+      return $this->_helper->json->sendJson([
+        'success' => false,
+        'data' => 'El parametro id no tiene data',
+      ]);
+    }
+
+    $this->_client->setUri($this->_uri . '/' . $this->_request->getQuery('id'));
+    $response = $this->_client->request();
+    $data = json_decode($response->getBody());
+
+    $this->_getError($data);
+
+    return $this->_helper->json->sendJson([
+      'success' => true,
+      'data' => $data,
+    ]);
+  }
+
   private function _getError($data, $codeValid = 200)
   {
     if (isset($data->code) && $data->code !== $codeValid) {
