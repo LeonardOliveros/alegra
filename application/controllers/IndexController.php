@@ -254,6 +254,10 @@ class IndexController extends Zend_Controller_Action
     ]);
   }
 
+  /**
+   * Metodo para retornar errores
+   * @return json
+   */
   private function _getError($data, $codeValid = 200)
   {
     if (isset($data->code) && $data->code !== $codeValid) {
