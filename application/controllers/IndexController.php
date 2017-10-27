@@ -52,8 +52,13 @@ class IndexController extends Zend_Controller_Action
     $this->_client->setAuth($this->_mail, $this->_token);
   }
 
-  public function indexAction()
+  private function _getError($data, $codeValid = 200)
   {
-    //
+    if (isset($data->code) && $data->code !== $codeValid) {
+      return $this->_helper->json->sendJson([
+        'success' => false,
+        'data' => $data->message,
+      ]);
+    }
   }
 }
