@@ -9,7 +9,7 @@ resources.frontController.controllerDirectory = APPLICATION_PATH "/controllers"
 resources.frontController.params.displayExceptions = 0
 
 configAlegra.uri = "https://app.alegra.com/api/v1/"
-configAlegra.mail = "correoregistrado@enalegra"
+configAlegra.email = "correoregistrado@enalegra"
 configAlegra.token = "tokengeneradodesdelaconfiguraciondealegra"
 
 [staging : production]
