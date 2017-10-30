@@ -2,21 +2,21 @@
 
 class Application_Model_Contact
 {
-  protected $_id;
-  protected $_name;
-  protected $_identification;
-  protected $_phonePrimary;
-  protected $_phoneSecondary;
-  protected $_fax;
-  protected $_mobile;
-  protected $_observations;
-  protected $_email;
-  protected $_priceList;
-  protected $_seller;
-  protected $_term;
-  protected $_address;
-  protected $_type;
-  protected $_internalContacts;
+  public $id;
+  public $name;
+  public $identification;
+  public $phonePrimary;
+  public $phoneSecondary;
+  public $fax;
+  public $mobile;
+  public $observations;
+  public $email;
+  public $priceList;
+  public $seller;
+  public $term;
+  public $address;
+  public $type;
+  public $internalContacts;
 
   public function __construct(array $options = null)
   {
@@ -57,166 +57,166 @@ class Application_Model_Contact
 
   public function setId($id)
   {
-    $this->_id = (int) $id;
+    $this->id = (int) $id;
     return $this;
   }
 
   public function getId()
   {
-    return $this->_id;
+    return $this->id;
   }
 
   public function setName($name)
   {
-    $this->_name = (string) $name;
+    $this->name = (string) $name;
     return $this;
   }
 
   public function getName()
   {
-    return $this->_name;
+    return $this->name;
   }
 
   public function setIdentification($identification)
   {
-    $this->_identification = (string) $identification;
+    $this->identification = (string) $identification;
     return $this;
   }
 
   public function getIdentification()
   {
-    return $this->_identification;
+    return $this->identification;
   }
 
   public function setPhonePrimary($phonePrimary)
   {
-    $this->_phonePrimary = (string) $phonePrimary;
+    $this->phonePrimary = (string) $phonePrimary;
     return $this;
   }
 
   public function getPhonePrimary()
   {
-    return $this->_phonePrimary;
+    return $this->phonePrimary;
   }
 
   public function setPhoneSecondary($phoneSecondary)
   {
-    $this->_phoneSecondary = (string) $phoneSecondary;
+    $this->phoneSecondary = (string) $phoneSecondary;
     return $this;
   }
 
   public function getPhoneSecondary()
   {
-    return $this->_phoneSecondary;
+    return $this->phoneSecondary;
   }
 
   public function setFax($fax)
   {
-    $this->_fax = (string) $fax;
+    $this->fax = (string) $fax;
     return $this;
   }
 
   public function getFax()
   {
-    return $this->_fax;
+    return $this->fax;
   }
 
   public function setMobile($mobile)
   {
-    $this->_mobile = (string) $mobile;
+    $this->mobile = (string) $mobile;
     return $this;
   }
 
   public function getMobile()
   {
-    return $this->_mobile;
+    return $this->mobile;
   }
 
   public function setObservations($observations)
   {
-    $this->_observations = (string) $observations;
+    $this->observations = (string) $observations;
     return $this;
   }
 
   public function getObservations()
   {
-    return $this->_observations;
+    return $this->observations;
   }
 
   public function setEmail($email)
   {
-    $this->_email = (string) $email;
+    $this->email = (string) $email;
     return $this;
   }
 
   public function getEmail()
   {
-    return $this->_email;
+    return $this->email;
   }
 
   public function setPriceList($priceList)
   {
-    $this->_priceList = $priceList;
+    $this->priceList = $priceList;
     return $this;
   }
 
   public function getPriceList()
   {
-    return $this->_priceList;
+    return $this->priceList;
   }
 
   public function setSeller($seller)
   {
-    $this->_seller = $seller;
+    $this->seller = $seller;
     return $this;
   }
 
   public function getSeller()
   {
-    return $this->_seller;
+    return $this->seller;
   }
 
   public function setTerm($term)
   {
-    $this->_term = $term;
+    $this->term = $term;
     return $this;
   }
 
   public function getTerm()
   {
-    return $this->_term;
+    return $this->term;
   }
 
   public function setAddress($address)
   {
-    $this->_address = $address;
+    $this->address = $address;
     return $this;
   }
 
   public function getAddress()
   {
-    return $this->_address;
+    return $this->address;
   }
 
   public function setType($type)
   {
-    $this->_type = $type;
+    $this->type = $type;
     return $this;
   }
 
   public function getType()
   {
-    return $this->_type;
+    return $this->type;
   }
 
   public function setInternalContacts($internalContacts)
   {
-    $this->_internalContacts = $internalContacts;
+    $this->internalContacts = $internalContacts;
     return $this;
   }
 
   public function getInternalContacts()
   {
-    return $this->_internalContacts;
+    return $this->internalContacts;
   }
 }

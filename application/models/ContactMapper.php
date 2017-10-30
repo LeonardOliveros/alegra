@@ -122,12 +122,9 @@ class Application_Model_ContactMapper
    * @param  {boolean} metadata
    * @return {object}  Retorna object con la data del contacto
    */
-  public function fetchAll($type = '', $query = '', $start = 0, $limit = 30, $orderDirection = 'ASC', $orderField = 'name', $metadata = false)
+  public function fetchAll($type = '', $query = '', $start = 0, $limit = 20)
   {
-    $params = "?start=$start&limit=$limit&order_direction=$orderDirection&order_field=$orderField";
-    if ($metadata) {
-      $params.= "&metadata=true";
-    }
+    $params = "?start=$start&limit=$limit&metadata=true";
     if (!empty($type) && in_array($type, array('client', 'provider'))) {
       $params.= "&type=$type";
     }
@@ -144,22 +141,18 @@ class Application_Model_ContactMapper
       return $data;
     }
 
-    $results = $metadata ? $data['data'] : $data;
+    $results = $data;
     $contacts   = array();
 
-    foreach ($results as $row) {
+    foreach ($results['data'] as $row) {
       $contact = new Application_Model_Contact($row);
       $contacts[] = $contact;
     }
 
-    if ($metadata) {
-      return [
-        'total' => $data['metadata']['total'],
-        'contacts' => $contacts,
-      ];
-    }
-
-    return $contacts;
+    return [
+      'total' => $data['metadata']['total'],
+      'data' => $contacts,
+    ];
   }
 
   /**
