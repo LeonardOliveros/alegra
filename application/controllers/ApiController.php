@@ -101,6 +101,18 @@ class ApiController extends Zend_Controller_Action
     $param = json_decode($this->getRequest()->getPost('data'));
 
     $contact = new Application_Model_ContactMapper();
+    if (count($param) > 1) {
+      foreach ($param as $key => $value) {
+        $data = $contact->delete($value->id);
+      }
+      $this->getResponse()->setHeader('Content-Type', 'application/json');
+      if (isset($data['code']) && '200' == $data['code']) {
+        return $this->_helper->json->sendJson([
+          'code' => 200,
+          'message' => 'Los contactos fueron eliminados correctamente.',
+        ]);
+      }
+    }
     $data = $contact->delete($param->id);
 
     $this->getResponse()->setHeader('Content-Type', 'application/json');
