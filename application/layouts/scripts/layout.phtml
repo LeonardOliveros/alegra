@@ -5,22 +5,20 @@
 	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
 	<title>Prueba de Alegra</title>
 	<link type="image/x-icon" rel="shortcut icon" href="https://cdn1.alegra.com/images/favicon.ico">
-	<link rel="stylesheet" type="text/css" href="https://cdn1.alegra.com/long-term/compressed/ext-theme-gray-all2.css">
-	<link rel="stylesheet" type="text/css" href="https://cdn1.alegra.com/public/8d744a7becfd25d0c10b9de95cea13a0/compressed/styles-min.css">
+	<?php
+		echo $this->headLink()
+			->appendStylesheet('/ext4/resources/css/ext-all.css')
+			->appendStylesheet('/resources/css/app.css');
+	?>
+	<!-- Archivos Ext JS -->
 	<?php
 		echo $this->headScript()
-			->appendFile('ext-4/ext-all.js')
+			->appendFile('ext4/ext-all-debug.js')
 			->appendFile('app.js');
 	?>
 	<script type="text/javascript" src="https://cdn1.alegra.com/long-term/compressed/ext-lang-es.js"></script>
 </head>
-<body id="contact-index" class="x-body x-webkit x-chrome">
-	<div class="main-container">
-		<div class="main-wrapper">
-			<div id="alegra_content" class="main-content">
-				<?php  echo $this->layout()->content ?>
-			</div>
-		</div>
-	</div>
+<body>
+	<?php  echo $this->layout()->content ?>
 </body>
 </html>
