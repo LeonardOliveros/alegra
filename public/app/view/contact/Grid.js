@@ -50,7 +50,9 @@ Ext.define('Alegra.view.contact.Grid', {
         icon   : 'https://cdn1.alegra.com/images/icons/zoom.png',
         tooltip: 'Visualizar',
         handler: function(grid, rowIndex, colIndex) {
-          var rec = grid.getStore().getAt(rowIndex);
+          let rec = grid.getStore().getAt(rowIndex);
+          let formShow = Ext.create('Alegra.view.contact.Show');
+          formShow.down('form').loadRecord(rec);
         },
       }, {
         icon   : 'https://cdn1.alegra.com/images/icons/page_edit.png',
@@ -65,7 +67,7 @@ Ext.define('Alegra.view.contact.Grid', {
         },
       }, {
         icon   : 'https://cdn1.alegra.com/images/icons/delete.png',
-        tooltip: 'Editar',
+        tooltip: 'Eliminar',
         handler: function(grid, rowIndex, colIndex) {
           let rec = grid.getStore().getAt(rowIndex);
           let store = grid.getStore();
@@ -109,19 +111,19 @@ Ext.define('Alegra.view.contact.Grid', {
       items: [{
         iconCls: 'icon-save',
         text: 'Agregar',
-        action: 'add'
+        action: 'add',
       }, {
         iconCls: 'icon-delete',
         text: 'Eliminar',
-        action: 'delete'
-      }]
+        action: 'delete',
+      }],
     }, {
       xtype: 'pagingtoolbar',
       dock: 'top',
       store: 'Contacts',
       displayInfo: true,
       displayMsg: 'Mostrando Contactos {0} - {1} de {2}',
-      emptyMsg: "Ning\u00FAn contacto encontrado."
+      emptyMsg: "Ning\u00FAn contacto encontrado.",
     }];
     this.callParent(arguments);
   }
