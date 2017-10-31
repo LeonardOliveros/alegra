@@ -12,6 +12,11 @@ configAlegra.uri = "https://app.alegra.com/api/v1/"
 configAlegra.email = "correoregistrado@enalegra"
 configAlegra.token = "tokengeneradodesdelaconfiguraciondealegra"
 
+resources.view[] =
+
+resources.layout.layoutPath = APPLICATION_PATH "/layouts/scripts/"
+resources.layout.layout = "layout"
+
 [staging : production]
 
 [testing : production]
