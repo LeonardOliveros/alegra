@@ -7,6 +7,7 @@ Ext.define('Alegra.view.contact.Form', {
   autoShow: true,
   width: 650,
   iconCls: 'icon-user',
+  itemId: 'modalForm',
   initComponent: function() {
     this.items = [{
       layout: 'column',
@@ -117,7 +118,7 @@ Ext.define('Alegra.view.contact.Form', {
               [2, '8 días'],
               [3, '15 días'],
               [4, '30 días'],
-              [5, '60 días']
+              [5, '60 días'],
             ],
   					fields : ['value', 'text'],
   				}),
@@ -155,9 +156,9 @@ Ext.define('Alegra.view.contact.Form', {
         iconCls: 'icon-reset',
         text: 'Cancelar',
         scope: this,
-        handler: this.close
-      }]
+        handler: this.close,
+      }],
     }];
     this.callParent(arguments);
-  }
+  },
 });
