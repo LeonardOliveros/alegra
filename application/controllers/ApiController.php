@@ -6,7 +6,7 @@ class ApiController extends Zend_Controller_Action
 {
   public function init()
   {
-    // Init
+    //
   }
 
   /**
@@ -26,7 +26,6 @@ class ApiController extends Zend_Controller_Action
   {
     $this->getHelper('Layout')->disableLayout();
     $this->getHelper('ViewRenderer')->setNoRender();
-    $this->getResponse()->setHeader('Content-Type', 'application/json');
 
     $start = intval($this->_request->getQuery('start')) ? intval($this->_request->getQuery('start')) : 0;
     $limit = intval($this->_request->getQuery('limit')) ? intval($this->_request->getQuery('limit')) : 20;
@@ -35,103 +34,62 @@ class ApiController extends Zend_Controller_Action
     $contacts = new Application_Model_ContactMapper();
     $data = $contacts->fetchAll('', '', $start, $limit);
 
-    return $this->_helper->json->sendJson($data);
-  }
-
-  /**
-   * Metodo para recuperar la data de un contacto
-   * @method GET
-   * @param  {int}  type
-   * @return {json} Retorna json con la data del
-   * contacto o json con error
-   */
-  public function findAction()
-  {
-    $this->getHelper('Layout')->disableLayout();
-    $this->getHelper('ViewRenderer')->setNoRender();
     $this->getResponse()->setHeader('Content-Type', 'application/json');
-
-    $contact = new Application_Model_ContactMapper();
-    $data = $contact->find(2);
-
     return $this->_helper->json->sendJson($data);
   }
 
   /**
    * Metodo para crear un contacto
    * @method POST
-   * @param  {string}   name
-   * @param  {string}   identification
-   * @param  {string}   phonePrimary
-   * @param  {string}   phoneSecondary
-   * @param  {string}   fax
-   * @param  {string}   mobile
-   * @param  {string}   observations
-   * @param  {string}   email
-   * @param  {object}   priceList
-   * @param  {object}   seller
-   * @param  {object}   term
-   * @param  {object}   address
-   * @param  {array}    type
-   * @param  {[object]} internalContacts
-   * @return {object}   Retorna object con la data del
+   * @param  {object} data contiene un object con toda
+   * la data del contacto
+   * @return {object} Retorna object con la data del
    * contacto creado o object con error
    */
   public function createAction()
   {
     $this->getHelper('Layout')->disableLayout();
     $this->getHelper('ViewRenderer')->setNoRender();
-    $this->getResponse()->setHeader('Content-Type', 'application/json');
 
-    $params = $this->getRequest()->getPost();
+    $params = (array) json_decode($this->getRequest()->getPost('data'));
+    unset($params['id']);
 
     $contact = new Application_Model_ContactMapper();
     $form = new Application_Model_Contact($params);
     $data = $contact->upsert($form);
 
+    $this->getResponse()->setHeader('Content-Type', 'application/json');
     return $this->_helper->json->sendJson($data);
   }
 
   /**
    * Metodo para actualizar un contacto
    * @method POST
-   * @param  {int}      id
-   * @param  {string}   name
-   * @param  {string}   identification
-   * @param  {string}   phonePrimary
-   * @param  {string}   phoneSecondary
-   * @param  {string}   fax
-   * @param  {string}   mobile
-   * @param  {string}   observations
-   * @param  {string}   email
-   * @param  {object}   priceList
-   * @param  {object}   seller
-   * @param  {object}   term
-   * @param  {object}   address
-   * @param  {array}    type
-   * @param  {[object]} internalContacts
-   * @return {object}   Retorna object con la data del
+   * @param  {object} data contiene un object con
+   * la data del contacto
+   * @return {object} Retorna object con la data del
    * contacto actualizado o object con error
    */
   public function updateAction()
   {
     $this->getHelper('Layout')->disableLayout();
     $this->getHelper('ViewRenderer')->setNoRender();
-    $this->getResponse()->setHeader('Content-Type', 'application/json');
 
-    $params = $this->getRequest()->getPost();
+    $params = (array) json_decode($this->getRequest()->getPost('data'));
 
     $contact = new Application_Model_ContactMapper();
     $form = new Application_Model_Contact($params);
     $data = $contact->upsert($form);
 
+    $this->getResponse()->setHeader('Content-Type', 'application/json');
     return $this->_helper->json->sendJson($data);
   }
 
   /**
    * Metodo para actualizar un contacto
    * @method POST
-   * @param  {int}    id
+   * @param  {object} data contiene un object con la
+   * data del contacto
    * @return {object} Retorna object con mensaje de
    * confirmacion o object con error
    */
@@ -139,13 +97,13 @@ class ApiController extends Zend_Controller_Action
   {
     $this->getHelper('Layout')->disableLayout();
     $this->getHelper('ViewRenderer')->setNoRender();
-    $this->getResponse()->setHeader('Content-Type', 'application/json');
 
-    $param = $this->getRequest()->getParam('id');
+    $param = json_decode($this->getRequest()->getPost('data'));
 
     $contact = new Application_Model_ContactMapper();
-    $data = $contact->delete($param);
+    $data = $contact->delete($param->id);
 
+    $this->getResponse()->setHeader('Content-Type', 'application/json');
     return $this->_helper->json->sendJson($data);
   }
 }
