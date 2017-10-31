@@ -115,7 +115,7 @@ class Application_Model_ContactMapper
    * @param  {string}  orderDirection
    * @param  {string}  orderField
    * @param  {boolean} metadata
-   * @return {object}  Retorna object con la data del contacto
+   * @return {[object]}  Retorna array of object con la data de los contactos
    */
   public function fetchAll($type = '', $query = '', $start = 0, $limit = 20)
   {
@@ -147,6 +147,31 @@ class Application_Model_ContactMapper
     return [
       'total' => $data['metadata']['total'],
       'data' => $contacts,
+    ];
+  }
+
+  /**
+   * Metodo para encontrar todos los contactos
+   * @param  {int} id
+   * @return {object}  Retorna object con la data del contacto
+   */
+  public function findById($id)
+  {
+    $this->_client->setUri($this->_uri . "/$id");
+    $response = $this->_client->request('GET');
+
+    $data = $response->getBody();
+    $data = json_decode($data, true);
+
+    if (isset($data['code']) && $data['code'] !== 200) {
+      return $data;
+    }
+
+    $result = self::_parseData([$data]);
+    $contact = new Application_Model_Contact($result[0]);
+
+    return [
+      'data' => $contact,
     ];
   }
 
