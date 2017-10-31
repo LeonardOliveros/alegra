@@ -12,6 +12,7 @@ class ApiController extends Zend_Controller_Action
   /**
    * Metodo para listar los contactos
    * @method GET
+   * @param  {int}     id
    * @param  {string}  type
    * @param  {string}  query
    * @param  {int}     start
@@ -27,12 +28,22 @@ class ApiController extends Zend_Controller_Action
     $this->getHelper('Layout')->disableLayout();
     $this->getHelper('ViewRenderer')->setNoRender();
 
+    // Busqueda individual
+    if (null != ($id = $this->_request->getQuery('id'))) {
+      $contacts = new Application_Model_ContactMapper();
+      $data = $contacts->findById($id);
+
+      $this->getResponse()->setHeader('Content-Type', 'application/json');
+      return $this->_helper->json->sendJson($data);
+    }
+
+    $type = $this->_request->getQuery('type') ? $this->_request->getQuery('type') : '';
     $start = intval($this->_request->getQuery('start')) ? intval($this->_request->getQuery('start')) : 0;
     $limit = intval($this->_request->getQuery('limit')) ? intval($this->_request->getQuery('limit')) : 20;
     $page = intval($this->_request->getQuery('page'));
 
     $contacts = new Application_Model_ContactMapper();
-    $data = $contacts->fetchAll('', '', $start, $limit);
+    $data = $contacts->fetchAll($type, '', $start, $limit);
 
     $this->getResponse()->setHeader('Content-Type', 'application/json');
     return $this->_helper->json->sendJson($data);
