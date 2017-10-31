@@ -1,5 +1,5 @@
 let sm = Ext.create('Ext.selection.CheckboxModel');
-
+// let theGrid;
 Ext.define('Alegra.view.contact.Grid', {
   extend: 'Ext.grid.Panel',
   alias: 'widget.contactGrid',
@@ -10,6 +10,7 @@ Ext.define('Alegra.view.contact.Grid', {
   store: 'Contacts',
   stripeRows: true,
   columnLines: true,
+  id: 'contactGrid',
   columns: [{
     header: 'Nombre',
     width: 299,
@@ -49,9 +50,10 @@ Ext.define('Alegra.view.contact.Grid', {
       {
         icon   : 'https://cdn1.alegra.com/images/icons/zoom.png',
         tooltip: 'Visualizar',
-        handler: function(grid, rowIndex, colIndex) {
-          let rec = grid.getStore().getAt(rowIndex);
-          let formShow = Ext.create('Alegra.view.contact.Show');
+        handler: function(grid, rowIndex, colIndex, item, e, record, row) {
+          // this.fireEvent('itemClick', grid, rowIndex, colIndex, item, e, record, row, 'show');
+          var rec = grid.getStore().getAt(rowIndex);
+          let formShow = Ext.create('Alegra.view.contact.Show').show();
           formShow.down('form').loadRecord(rec);
         },
       }, {
@@ -106,9 +108,25 @@ Ext.define('Alegra.view.contact.Grid', {
     ],
   }],
   initComponent: function() {
+    // theGrid = this;
     this.dockedItems = [{
       xtype: 'toolbar',
-      items: [{
+      items: [/*{
+        iconCls: 'icon-grid',
+        text: 'Todos',
+        handler: this.showAll,
+        scope: this,
+      }, {
+        iconCls: 'icon-grid',
+        text: 'Clientes',
+        handler: this.showClients,
+        scope: this,
+      }, {
+        iconCls: 'icon-grid',
+        text: 'Proveedores',
+        handler: this.showProviders,
+        scope: this,
+      }, */{
         iconCls: 'icon-save',
         text: 'Agregar',
         action: 'add',
@@ -128,3 +146,19 @@ Ext.define('Alegra.view.contact.Grid', {
     this.callParent(arguments);
   }
 });
+
+/*function getAll() {
+  const store = theGrid.getContactGrid();
+  store.read();
+}
+
+function getClients() {
+  const store = theGrid.getContactGrid();
+  store.read({ params: { 'type': 'client' } });
+}
+
+function getProviders() {
+  const store = theGrid.getContactGrid();
+  store.read({ params: { 'type': 'provider' } });
+}
+*/

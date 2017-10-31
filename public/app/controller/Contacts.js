@@ -2,7 +2,7 @@ Ext.define('Alegra.controller.Contacts', {
 	extend: 'Ext.app.Controller',
 	stores: ['Contacts'],
 	models: ['Contact'],
-	views: ['contact.Form', 'contact.Grid'],
+	views: ['contact.Form', 'contact.Grid', 'contact.Show'],
 	refs: [{
 		ref: 'contactPanel',
 		selector: 'panel',
@@ -12,6 +12,9 @@ Ext.define('Alegra.controller.Contacts', {
 	}],
 	init: function() {
 		this.control({
+			//'actioncolumn': {
+			//	itemClick: this.onActionColumnItemClick,
+			//},
 			'contactGrid dataview': {
 				itemdblclick: this.editContact,
 			},
@@ -26,14 +29,32 @@ Ext.define('Alegra.controller.Contacts', {
 			},
 		});
 	},
-	editContact: function(grid, record) {
+	/*onActionColumnItemClick(view, rowIndex, colIndex, item, e, record, row, action) {
+		switch (action) {
+			case 'show':
+				const id = record.get('id');
+				this.getContact(id);
+				break;
+			default:
+		}
+	},*/
+	/*getContact(id) {
+		const store = this.getContactsStore();
+		store.read({ params: { id }, synchronous: false }, function(data) {
+			const formShow = Ext.create('Alegra.view.contact.Show').show();
+			formShow.down('form').loadRecord(data);
+		}, this);
+		const formShow = Ext.create('Alegra.view.contact.Show').show();
+    const store = this.getContactsStore();
+	},*/
+	editContact(grid, record) {
 		let editar = Ext.create('Alegra.view.contact.Form').show();
 		// Si se edita un record.
 		if (record.stores != null) {
 			editar.down('form').loadRecord(record);
 		}
 	},
-	createOrUpdateContact: function(button) {
+	createOrUpdateContact(button) {
 		let win = button.up('window');
 		let form   = win.down('form');
 		let record = form.getRecord();
@@ -72,7 +93,7 @@ Ext.define('Alegra.controller.Contacts', {
 			scope: this,
 		});
 	},
-	destroyContact: function(button) {
+	destroyContact(button) {
 		let grid = this.getContactGrid();
 		let records = grid.getSelectionModel().getSelection();
 		let store = this.getContactsStore();
@@ -108,8 +129,8 @@ Ext.define('Alegra.controller.Contacts', {
 							scope: this,
 						});
 					}
-				}
+				},
 			});
 		}
-	}
+	},
 });
