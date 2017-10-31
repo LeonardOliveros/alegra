@@ -73,7 +73,7 @@ class Application_Model_ContactMapper
       'address' => $contact->getAddress(),
       'city' => $contact->getCity(),
     ];
-    print_r($contact);
+
     $params = array(
       'id' => $contact->getId(),
       'name' => $contact->getName(),
