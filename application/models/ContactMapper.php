@@ -46,8 +46,10 @@ class Application_Model_ContactMapper
     $this->_client = new Zend_Http_Client();
     // Se setea la URi
     $this->_client->setUri($this->_uri);
+    // Aumenta el tiempo de espera
+    $this->_client->setConfig(array('timeout' => 30));
     // Se setean los datos de autenticacion
-    $this->_client->setAuth($this->_email, $this->_token);
+    $this->_client->setAuth($this->_email, $this->_token, Zend_Http_Client::AUTH_BASIC);
   }
 
   /**
@@ -58,6 +60,20 @@ class Application_Model_ContactMapper
    */
   public function upsert(Application_Model_Contact $contact)
   {
+    // Setea el tipo de contacto
+    $type = array();
+    if ($contact->getIsClient()) {
+      $type[] = 'client';
+    }
+    if ($contact->getIsProvider()) {
+      $type[] = 'provider';
+    }
+    // Setea la direccion del contacto
+    $address = (object) [
+      'address' => $contact->getAddress(),
+      'city' => $contact->getCity(),
+    ];
+    print_r($contact);
     $params = array(
       'id' => $contact->getId(),
       'name' => $contact->getName(),
@@ -68,12 +84,12 @@ class Application_Model_ContactMapper
       'mobile' => $contact->getMobile(),
       'observations' => $contact->getObservations(),
       'email' => $contact->getEmail(),
-      'priceList' => $contact->getPricelist(),
-      'seller' => $contact->getSeller(),
-      'term' => $contact->getTerm(),
-      'address' => $contact->getAddress(),
-      'type' => $contact->getType(),
-      'internalContacts' => $contact->getInternalcontacts(),
+      'priceList' => empty($contact->getPriceList()) ? null : $contact->getPriceList(),
+      'seller' => empty($contact->getSeller()) ? null : $contact->getSeller(),
+      'term' => empty($contact->getTerm()) ? null : $contact->getTerm(),
+      'address' => $address,
+      'type' => $type,
+      'internalContacts' => $contact->getInternalContacts(),
     );
 
     if (null === ($id = $contact->getId())) {
@@ -88,27 +104,6 @@ class Application_Model_ContactMapper
       $data = json_decode($data, true);
     }
     return $data;
-  }
-
-  /**
-   * Metodo para encontrar un contacto
-   * @param {int} id
-   * @return {object} con la data del contacto
-   */
-  public function find($id)
-  {
-    $this->_client->setUri($this->_uri . "/$id");
-    $response = $this->_client->request('GET');
-    $data = $response->getBody();
-    $data = json_decode($data, true);
-
-    if (isset($data['code']) && $data['code'] !== 200) {
-      return $data;
-    }
-
-    $contact = new Application_Model_Contact($data);
-
-    return $contact;
   }
 
   /**
@@ -141,10 +136,10 @@ class Application_Model_ContactMapper
       return $data;
     }
 
-    $results = $data;
-    $contacts   = array();
+    $results = self::_parseData($data['data']);
+    $contacts = array();
 
-    foreach ($results['data'] as $row) {
+    foreach ($results as $row) {
       $contact = new Application_Model_Contact($row);
       $contacts[] = $contact;
     }
@@ -156,7 +151,7 @@ class Application_Model_ContactMapper
   }
 
   /**
-   * Metodo para actualizar un contacto
+   * Metodo para eliminar un contacto
    * @param  {int}    id
    * @return {object} Retorna object con mensaje de
    * confirmacion o object con error
@@ -172,6 +167,31 @@ class Application_Model_ContactMapper
       return $data;
     }
 
+    return $data;
+  }
+
+  private function _parseData($data = []) {
+    $i = 0;
+    foreach ($data as $key => $value) {
+      $data[$i]['isClient'] = false;
+      $data[$i]['isProvider'] = false;
+      if (isset($value['priceList']['id'])) {
+        $data[$i]['priceList'] = [$value['priceList']['name']];
+      }
+      if (isset($value['seller']['id'])) {
+        $data[$i]['seller'] = [$value['seller']['name']];
+      }
+      if (isset($value['term']['id'])) {
+        $data[$i]['term'] = [$value['term']['name']];
+      }
+      if ((isset($value['type'][0]) && 'client' === $value['type'][0]) || (isset($value['type'][1]) && 'client' === $value['type'][1])) {
+        $data[$i]['isClient'] = true;
+      }
+      if ((isset($value['type'][0]) && 'provider' === $value['type'][0]) || (isset($value['type'][1]) && 'provider' === $value['type'][1])) {
+        $data[$i]['isProvider'] = true;
+      }
+      $i++;
+    }
     return $data;
   }
 }

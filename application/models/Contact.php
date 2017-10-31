@@ -15,7 +15,9 @@ class Application_Model_Contact
   public $seller;
   public $term;
   public $address;
-  public $type;
+  public $city;
+  public $isClient;
+  public $isProvider;
   public $internalContacts;
 
   public function __construct(array $options = null)
@@ -198,15 +200,37 @@ class Application_Model_Contact
     return $this->address;
   }
 
-  public function setType($type)
+  public function setCity($city)
   {
-    $this->type = $type;
+    $this->city = $city;
     return $this;
   }
 
-  public function getType()
+  public function getCity()
   {
-    return $this->type;
+    return $this->city;
+  }
+
+  public function setIsClient($isClient)
+  {
+    $this->isClient = (boolean) $isClient;
+    return $this;
+  }
+
+  public function getIsClient()
+  {
+    return $this->isClient;
+  }
+
+  public function setIsProvider($isProvider)
+  {
+    $this->isProvider = (boolean) $isProvider;
+    return $this;
+  }
+
+  public function getIsProvider()
+  {
+    return $this->isProvider;
   }
 
   public function setInternalContacts($internalContacts)
