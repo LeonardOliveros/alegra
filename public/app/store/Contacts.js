@@ -1,41 +1,34 @@
-Ext.define('Application.store.Contacts',{
-	extend: 'Ext.data.Store',
-	autoLoad: true,
-	autoSync: false,
-	storeId: 'Contacts',
-	leadingBufferZone: 10,
+Ext.define('Alegra.store.Contacts', {
+  extend: 'Ext.data.Store',
+  model: 'Alegra.model.Contact',
+  autoLoad: true,
+  leadingBufferZone: 10,
 	pageSize: 20,
-	model: 'Application.model.Contact',
-	proxy: {
-		type: 'ajax',
-		api: {
-			read: 'api/index',
-			create: 'api/create',
-			update: 'api/update',
-			destroy: 'api/delete',
-		},
-		actionMethods: {
-			read: 'GET',
-			create: 'POST',
-			update: 'POST',
-			destroy: 'POST',
-		},
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		reader: {
-			type: 'json',
-			root: 'data',
-			rootProperty: 'data',
-			successProperty: 'success',
-			messageProperty: 'message',
-			totalProperty: 'total',
-		},
-		writer: {
-			type: 'json',
-			writeAllFields: true,
-			root: 'data',
-			encode: true,
-		},
-	},
+  autoLoad: { start: 0, limit: 20 },
+  proxy: {
+    type: 'ajax',
+    api: {
+      create: 'api/create',
+      read: 'api/index',
+      update: 'api/update',
+      destroy: 'api/delete',
+    },
+    actionMethods: {
+      create: 'POST',
+      read: 'GET',
+      update: 'POST',
+      destroy: 'POST',
+    },
+    reader: {
+      type: 'json',
+      root: 'data',
+      successProperty: 'success',
+    },
+    writer: {
+      type: 'json',
+      writeAllFields: true,
+      encode: true,
+      root: 'data',
+    },
+  },
 });

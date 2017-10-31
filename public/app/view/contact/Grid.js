@@ -1,85 +1,55 @@
-let sm = Ext.create('Ext.selection.CheckboxModel');
-
-Ext.define('Application.view.contact.Grid', {
-	extend: 'Ext.grid.Panel',
-	alias: 'widget.contactGrid',
-	itemId: 'contactGrid',
-	xtype: 'contactGrid',
-	store: 'Contacts',
-	selModel: sm,
-	columns: [
-		/*{
-			xtype: 'checkcolumn',
-			width: 60,
-			editor: {
-				xtype: 'checkbox',
-				cls: 'x-grid-checkheader-editor',
-			},
-		},*/
-		{ text: 'Id', dataIndex: 'id', flex: 1, hidden: true },
-		{ text: 'Nombre', dataIndex: 'name', flex: 2, menuDisabled: true },
-		{ text: 'Idenificación', dataIndex: 'identification', flex: 1, menuDisabled: true },
-		{ text: 'Teléfono 1', dataIndex: 'phonePrimary', flex: 1, menuDisabled: true },
-		{ text: 'Observaciones', dataIndex: 'observations', flex: 1, menuDisabled: true },
-		{
-			xtype: 'actioncolumn',
-			width: 50,
-			text: 'Acciones',
-			align: 'center',
-			flex: 1,
-			menuDisabled: true,
-			items: [
-				{
-					icon   : 'https://cdn1.alegra.com/images/icons/zoom.png',
-					tooltip: 'Visualizar',
-					renderer: function(value) {
-          	return Ext.String.format('<a href="mailto:{0}">{1}</a>', value, value);
-        	}
-				},
-				{
-					icon   : 'https://cdn1.alegra.com/images/icons/page_edit.png',
-					tooltip: 'Editar',
-					handler: function(grid, rowIndex, colIndex) {
-						let rec = grid.getStore().getAt(rowIndex);
-						// location.href = 'index/edit';
-					},
-				},
-			],
-		},
-	],
-	dockedItems: [
-		{
-			xtype: 'toolbar',
-			dock: 'top',
-			items: [
-				{
-					xtype: 'button',
-					text: 'Nuevo Contacto',
-				 	iconCls: 'add',
-				 	action: 'showAdd'
-				},
-				{
-					text: 'Eliminar Contacto',
-					iconCls: 'delete',
-					action: 'delete'
-				},
-				{
-					text: 'Editar Contacto',
-					iconCls: 'edit',
-					action: 'edit'
-				},
-				{
-					text: 'Ver detalle',
-					iconCls: 'zoom',
-					action: 'show'
-				}
-			],
-		},
-		{
-			xtype: 'pagingtoolbar',
-			store: 'Contacts',
-			displayInfo: true,
-			dock: 'bottom',
-		},
-	],
+Ext.define('Alegra.view.contact.Grid' ,{
+  extend: 'Ext.grid.Panel',
+  alias: 'widget.contactGrid',
+  requires: ['Ext.toolbar.Paging'],
+  iconCls: 'icon-grid',
+  title: 'Contactos',
+  store: 'Contacts',
+  columns: [{
+    header: 'Nombre',
+    width: 299,
+    flex: 1,
+    dataIndex: 'name',
+    menuDisabled: true,
+  }, {
+    header: 'Identificación',
+    width: 177,
+    flex: 1,
+    dataIndex: 'identification',
+    menuDisabled: true,
+  }, {
+    header: 'Teléfono 1',
+    width: 177,
+    flex: 1,
+    dataIndex: 'phonePrimary',
+    menuDisabled: true,
+  }, {
+    header: 'Observaciones',
+    width: 177,
+    flex: 1,
+    dataIndex: 'observations',
+    menuDisabled: true,
+  }],
+  initComponent: function() {
+    this.dockedItems = [{
+      xtype: 'toolbar',
+      items: [{
+        iconCls: 'icon-save',
+        text: 'Agregar',
+        action: 'add'
+      }, {
+        iconCls: 'icon-delete',
+        text: 'Eliminar',
+        action: 'delete'
+      }]
+    }, {
+      xtype: 'pagingtoolbar',
+      dock: 'top',
+      store: 'Contacts',
+      displayInfo: true,
+      displayMsg: 'Mostrando Contactos {0} - {1} de {2}',
+      emptyMsg: "Ning\u00FAn contacto encontrado."
+    }];
+    this.callParent(arguments);
+  }
 });

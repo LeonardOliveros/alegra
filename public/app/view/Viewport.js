@@ -1,16 +1,17 @@
-Ext.define('Application.view.Viewport', {
-  extend: 'Ext.container.Viewport',
-  layout: {
-    type: 'vbox',
-    align: 'stretch',
-    pack: 'start',
-  },
-  autoScroll: false,
-  maxHeight: 510,
-  items :  [
-    {
-      xtype: 'contactGrid',
-      flex: 1,
-    },
-  ],
+Ext.define('Alegra.view.Viewport', {
+	extend: 'Ext.Viewport',
+	layout: 'fit',
+	requires: [
+		'Alegra.view.contact.Grid',
+		'Alegra.view.contact.Form',
+	],
+	initComponent: function() {
+		var me = this;
+		Ext.apply(me, {
+			items: [{
+				xtype : 'contactGrid',
+			}],
+		});
+		me.callParent(arguments);
+	},
 });
