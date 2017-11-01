@@ -37,7 +37,7 @@ class Application_Model_ContactMapper
     // Se asigna la URi a una variable privada
     $this->_baseUri = $dataAlegra['uri'];
     // Se setea el sufijo(controlador)
-    $this->_uri = $this->_baseUri . '/contacts';
+    $this->_uri = $this->_baseUri . 'contacts';
     // Se asigna el mail a una variable privada
     $this->_email = $dataAlegra['email'];
     // Se asigna el token a una variable privada
